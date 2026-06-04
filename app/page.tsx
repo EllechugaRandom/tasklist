@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button"
@@ -19,11 +19,13 @@ import { Checkbox } from "@/components/ui/checkbox"
 export default function Home() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [tasks, setTasks] = useState<{ id: number; title: string; description?: string; completed: boolean }[]>([]);
+  const [tasks, setTasks] = useState<{ id: number; title: string; description: string; completed: boolean }[]>([]);
 
   function creaTarea() {
     const t = title.trim();
-    if (!t) return;
+    if (!t) {
+      return;
+    }
     const newTask = { id: Date.now(), title: t, description: description.trim(), completed: false };
     setTasks((s) => [newTask, ...s]);
     setTitle("");
@@ -32,6 +34,10 @@ export default function Home() {
 
   function toggleCompleted(id: number, value: boolean) {
     setTasks((s) => s.map(task => task.id === id ? { ...task, completed: value } : task));
+  }
+
+  function deleteTask(id: number) {
+    setTasks((s) => s.filter(task => task.id !== id));
   }
 
   return (
@@ -67,21 +73,28 @@ export default function Home() {
             </CardFooter>
           </Card>
       </div>
-      <Separator className="w-full border-t border-border" />
-      <div id="lista" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-center">
+      <Separator className="w-full border-t" />
+      <div id="lista" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">
         {tasks.length === 0 ? (
           <div className="text-muted-foreground">No hay tareas</div>
         ) : (
           tasks.map(task => (
-            <div key={task.id} className="w-48 h-48 p-3 rounded-md border border-input flex flex-col justify-between bg-card text-card-foreground">
-              <div className="flex items-start justify-between gap-2">
-                <strong className={task.completed ? 'line-through text-muted-foreground' : 'text-foreground'}>{task.title}</strong>
+            <Card key={task.id} className={`min-h-48 max-h-fit flex flex-col justify-between ${task.completed ? 'bg-muted/20' : ''}`}>
+              <CardHeader className="flex items-start justify-between gap-2">
+                <CardTitle className={`text-lg break-words whitespace-normal flex-1 min-w-0 ${task.completed ? "line-through text-muted-foreground italic":""}`}>{task.title}</CardTitle>
                 <Checkbox checked={task.completed} onCheckedChange={(v) => toggleCompleted(task.id, !!v)} />
-              </div>
-              <div className="text-sm text-muted-foreground overflow-hidden">
-                {task.description || <span className="italic">Sin descripción</span>}
-              </div>
-            </div>
+              </CardHeader>
+              <CardContent className={`text-sm break-words whitespace-normal text-muted-foreground ${task.completed ? "italic":""}`}>
+                {task.description || <em>Sin descripción</em>}
+              </CardContent>
+              {task.completed ? (
+                <CardFooter className="p-0">
+                  <Button type="button" variant={"outline"} className="w-full" onClick={() => deleteTask(task.id)}>
+                    Eliminar
+                  </Button>
+                </CardFooter>
+              ) : null}
+            </Card>
           ))
         )}
       </div>

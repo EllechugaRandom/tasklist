@@ -1,7 +1,7 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { insertarTarea } from "@/lib/tareas-prisma"
+import { insertarTarea, borrarTarea } from "@/lib/tareas-prisma"
 
 export async function crearTarea(formData: FormData) {
   const titulo = formData.get("titulo")
@@ -11,11 +11,16 @@ export async function crearTarea(formData: FormData) {
     return
   }
 
-  if (titulo.trim() === "" || descripcion.trim() === "") {
+  if (titulo.trim() === "") {
     return
   }
 
   await insertarTarea(titulo.trim(), descripcion.trim())
 
-  revalidatePath("/gestor-tareas")
+  revalidatePath("/")
+}
+
+export async function eliminarTarea(id: number) {
+  await borrarTarea(id)
+  revalidatePath("/")
 }

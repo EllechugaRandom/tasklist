@@ -7,7 +7,7 @@ datasource db {
   provider = "mysql"
 }
 
-model Tarea {
+model tarea {
   id          Int      @id @default(autoincrement())
   titulo      String   @db.VarChar(100)
   descripcion String   @db.Text

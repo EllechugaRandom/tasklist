@@ -1,20 +1,17 @@
 "use client"
-import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+
 import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
+import { TareaForm } from "./gestor-tareas/TareaForm";
 
 export default function Home() {
   type Tarea = {
@@ -54,35 +51,7 @@ export default function Home() {
   return (
     <div className="flex p-4 flex-col gap-4">
       <div className="flex justify-center">
-        <Card className="border max-w-fit">
-          <CardHeader className="">
-            <CardTitle>Crear una nueva tarea</CardTitle>
-            <CardDescription>Añade una nueva tarea a tu lista</CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-2">
-            <Label htmlFor="titulo">Título</Label>
-            <Input
-              id="titulo"
-              type="text"
-              value={titulo}
-              onChange={(e) => setTitulo(e.target.value)}
-              placeholder="Escribe el título de la tarea"
-              className="flex h-10 w-full border px-3 py-2"
-            />
-            <Label htmlFor="descripcion">Descripción</Label>
-            <Input
-              id="descripcion"
-              type="text"
-              value={descripcion}
-              onChange={(e) => setDescripcion(e.target.value)}
-              placeholder="Detalles opcionales"
-              className="flex h-10 w-full border px-3 py-2"
-            />
-          </CardContent>
-          <CardFooter className="p-0">
-            <Button onClick={creaTarea} type="button" variant={"default"} className="w-full">Crear</Button>
-          </CardFooter>
-        </Card>
+          <TareaForm />
       </div>
       <Separator className="w-full border-t" />
       <div id="lista" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">

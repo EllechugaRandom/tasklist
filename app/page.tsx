@@ -36,6 +36,7 @@ export default function Home() {
       id: Date.now(),
       titulo: titulo.trim(),
       descripcion: descripcion.trim(),
+      completed: false,
     };
     setTareas([...tareas, nuevaTarea])
     setTitulo("")
@@ -89,13 +90,13 @@ export default function Home() {
           <div className="text-muted-foreground">No hay tareas</div>
         ) : (
           tareas.map(task => (
-            <Card key={task.id} className={`min-h-48 max-h-fit flex flex-col justify-between ${tareas.completed ? 'bg-muted/20' : ''}`}>
+            <Card key={task.id} className={`min-h-48 max-h-fit flex flex-col justify-between ${task.completed ? 'bg-muted/20' : ''}`}>
               <CardHeader className="flex items-start justify-between gap-2">
-                <CardTitle className={`text-lg break-words whitespace-normal flex-1 min-w-0 ${task.completed ? "line-through text-muted-foreground italic" : ""}`}>{task.title}</CardTitle>
+                <CardTitle className={`text-lg wrap-break-words whitespace-normal flex-1 min-w-0 ${task.completed ? "line-through text-muted-foreground italic" : ""}`}>{task.titulo}</CardTitle>
                 <Checkbox checked={task.completed} onCheckedChange={(v) => toggleCompleted(task.id, !!v)} />
               </CardHeader>
-              <CardContent className={`text-sm break-words whitespace-normal text-muted-foreground ${task.completed ? "italic" : ""}`}>
-                {task.description || <em>Sin descripción</em>}
+              <CardContent className={`text-sm wrap-break-words whitespace-normal text-muted-foreground ${task.completed ? "italic" : ""}`}>
+                {task.descripcion || <em>Sin descripción</em>}
               </CardContent>
               {task.completed ? (
                 <CardFooter className="p-0">
